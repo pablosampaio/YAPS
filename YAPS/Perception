@@ -1,0 +1,28 @@
+
+- criar controle das percepções?
+ 
+- uso simples: sem verificações de limites de percepção, etc.
+
+- PENSAR: não criar mecanismos explícitos de controle das distâncias das percepções?
+  - deixar a cargo do pesquisador fazer o controle e reportar fielmente
+    . pesquisadores não estão fazendo um "joguinho" (eles devem ser 
+    sérios em suas afirmações)
+    . menos custoso computacionalmente?
+  
+  - porém (se for remoto), pode gerar overhead de comunicação 
+
+- três tipos de medidas de distância
+  . quantidade de arestas
+  . distâncias (menores caminhos)
+  . distância, baseada nas coordenadas 2D  
+
+- classe opcional para restringir as percepções (se não passar, vê tudo; se passar 
+  sem setar nada, não vê nada)
+
+  PerceptionSettings perc = new PerceptionSettings()
+  perc.setGraphRange(10, EDGES)
+  perc.setNodeFlagsRange(10, EDGE_LENGTHS)
+  perc.setMessageRange(10, DISTANCE_2D)
+
+  elementos não percebidos: retorna null ou -1
+
