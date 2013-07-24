@@ -31,5 +31,6 @@ OPCAO 2: controlar ranges das percepções
 	perc.setSocietyRange(2, DISTANCE_2D)
 
   elementos não percebidos: retorna null ou -1
+  
 
 
