@@ -2,25 +2,37 @@ package yaps.map_library;
 
 public class NodeProperties {
 	public final int index;
-	public final String label;
-	public final int pos_x;
-	public final int pos_y;
+	private String label;
+	private int pos_x;
+	private int pos_y;
 	
 	private double importance;
 	private String informationMark;
+
 	//add other properties here... 
-	//if it may change during simulation, make them private and use get/set
 	
-	NodeProperties(int i, String lbl) {
+	NodeProperties(int i) {
 		this.index = i;
-		this.label = lbl;
-		this.pos_x = i % 10;
-		this.pos_y = i / 10;
+		this.set2Dposition(i % 10, i / 10);
 	}
 
-	NodeProperties(int i, String lbl, int x, int y) {
-		this.index = i;
-		this.label = lbl;
+	public String getLabel() {
+		return label;
+	}
+
+	void setLabel(String label) {
+		this.label = label;
+	}
+
+	public int getPosX() {
+		return pos_x;
+	}
+
+	public int getPosY() {
+		return pos_y;
+	}
+	
+	void set2Dposition(int x, int y) {
 		this.pos_x = x;
 		this.pos_y = y;
 	}
@@ -29,7 +41,7 @@ public class NodeProperties {
 		return importance;
 	}
 
-	public void setImportance(double importance) {
+	void setImportance(double importance) {
 		assert(importance >= 0);
 		this.importance = importance;
 	}
@@ -38,8 +50,11 @@ public class NodeProperties {
 		return informationMark;
 	}
 
-	public void setInformationMark(String informationMark) {
+	void setInformationMark(String informationMark) {
 		this.informationMark = informationMark;
 	}
-	
+
+	public String toString() {
+		return String.format("{node %d (%s): (%d, %d)}", index, label, pos_x, pos_y);		
+	}
 }
