@@ -1,17 +1,22 @@
 package yaps.map_library;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 
+/**
+ * A simple lexer created for parsing the "YAPS Map Format". 
+ *  
+ * @author Pablo A. Sampaio
+ */
 public class MapLexer {
-	private FileInputStream input;
+	private InputStream input;
 	private int nextChar = -1;
 	private int line;
 	
-	MapLexer(String file) throws MapParsingException {
+	MapLexer(InputStream inputStream) throws MapParsingException {
 		try {
-			this.input = new FileInputStream(file);
+			this.input = inputStream;
 			this.nextChar = this.input.read();
 			this.line = 1;
 			

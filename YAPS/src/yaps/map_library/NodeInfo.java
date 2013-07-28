@@ -1,6 +1,12 @@
 package yaps.map_library;
 
-public class NodeProperties {
+/**
+ * Class that holds information about the node in the simulador, including dynamic 
+ * information set during simulation.
+ * 
+ * @author Pablo A. Sampaio
+ */
+public class NodeInfo {
 	public final int index;
 	private String label;
 	private int pos_x;
@@ -11,7 +17,7 @@ public class NodeProperties {
 
 	//add other properties here... 
 	
-	NodeProperties(int i) {
+	NodeInfo(int i) {
 		this.index = i;
 		this.set2Dposition(i % 10, i / 10);
 	}

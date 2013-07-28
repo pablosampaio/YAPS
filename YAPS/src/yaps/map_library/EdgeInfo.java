@@ -1,7 +1,12 @@
 package yaps.map_library;
 
-
-public class EdgeProperties {
+/**
+ * Class that holds information about the edge in the simulador, including dynamic 
+ * information set during simulation.
+ *  
+ * @author Pablo A. Sampaio
+ */
+public class EdgeInfo {
 	public final int index;
 	
 	public final int nodeA;
@@ -10,22 +15,13 @@ public class EdgeProperties {
 	
 	private double length;
 	private String label;	
+
 	
-	private String informationMark;
-	
-	public EdgeProperties(int i, boolean directed, int nodeFrom, int nodeTo) {
+	public EdgeInfo(int i, boolean directed, int nodeFrom, int nodeTo) {
 		this.index = i;
 		this.directed = directed;
 		this.nodeA = nodeFrom;
 		this.nodeB = nodeTo;
-	}
-
-	public String getInformationMark() {
-		return informationMark;
-	}
-
-	public void setInformationMark(String informationMark) {
-		this.informationMark = informationMark;
 	}
 	
 	public String getLabel() {

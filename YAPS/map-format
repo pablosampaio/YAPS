@@ -1,5 +1,6 @@
 
-mapname MAP_X 
+map MAP_X 
+topology-tags: directed, edge-weighted #define a set of possible values, parser won't check!
 
 nodes: 5
 nodes-attributes: label, importance, capacity, 2d-position, recharge-point 
@@ -19,7 +20,3 @@ edges-attributes: label,  length, disable-probability
 5	1->3:	edge1-3	3	0.78
 6	3->1:	edge3-1	2	0.3333
 
-#nas propriedades pode ter: inteiro, float, n-tuplas (de outros tipos básico)
-#melhor fixar o tipo de cada propriedade
-
-#labels meramente decorativos?
