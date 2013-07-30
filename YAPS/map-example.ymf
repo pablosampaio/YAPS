@@ -1,5 +1,5 @@
 
-mapname MAP_X 
+map MAP_X 
 
 nodes: 5
 nodes-attributes: label, importance, 2d-position 

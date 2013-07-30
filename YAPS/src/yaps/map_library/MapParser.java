@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import yaps.util.YapsLexer;
+import yaps.util.YapsParsingException;
+
 
 /**
  * This class parses the map information (coded in "YAPS Map Format") from a InputStream,
@@ -28,22 +31,22 @@ public class MapParser {
 	private boolean hasLengths;
 	private boolean isDirected; //obs.: a mixed graph is considered directed
 
-	MapLexer lexer;
+	YapsLexer lexer;
 
 	public MapParser() {		
 	}
 	
-	public Map loadFromFile(String fileName) throws MapParsingException {
+	public Map loadFromFile(String fileName) throws YapsParsingException {
 		try {
 			return loadFromFile(new FileInputStream(fileName));
 		} catch (FileNotFoundException e) {
 			File f = new File(fileName);
-			throw new MapParsingException("File not found: " + f.getAbsolutePath());
+			throw new YapsParsingException("File not found: " + f.getAbsolutePath());
 		}
 	}
 	
-	public Map loadFromFile(InputStream input) throws MapParsingException {
-		lexer = new MapLexer(input);
+	public Map loadFromFile(InputStream input) throws YapsParsingException {
+		lexer = new YapsLexer(input);
 		
 		parse();
 		
@@ -55,9 +58,9 @@ public class MapParser {
 		return map;
 	}
 	
-	private void parse() throws MapParsingException {
-		lexer.checkString("mapname");	
-		this.mapName = lexer.getString();
+	private void parse() throws YapsParsingException {
+		lexer.checkString("map");	
+		this.mapName = lexer.readString();
 
 		lexer.advanceLines();
 		
@@ -67,26 +70,26 @@ public class MapParser {
 		//obs.: it doesn't verify for EOF
 	}
 
-	private void parseNodes() throws MapParsingException {
+	private void parseNodes() throws YapsParsingException {
 		lexer.checkString("nodes");
-		lexer.checkChar(':');
+		lexer.checkSymbol(':');
 		
-		int numNodes = lexer.getInteger();
+		int numNodes = lexer.readInteger();
 		
 		if (numNodes <= 0) {
-			throw new MapParsingException("Invalid number of nodes: " + numNodes);
+			throw new YapsParsingException("Invalid number of nodes: " + numNodes);
 		}
 		this.nodes = new NodeInfo[numNodes];
 		
 		lexer.advanceLines();
 		lexer.checkString("nodes-attributes");
-		lexer.checkChar(':');
+		lexer.checkSymbol(':');
 		
 		String attr;
 		char c;
 		
 		do {
-			attr = lexer.getString();
+			attr = lexer.readString();
 			nodeAttributes.add(attr);
 			
 			if (attr.equals("importance")) {
@@ -95,7 +98,7 @@ public class MapParser {
 				this.has2Dcoordinates = true;	
 			}
 			
-			c = lexer.getSymbol();
+			c = lexer.readSymbol();
 		} while (c == ',');
 		
 		lexer.advanceLines();
@@ -105,7 +108,7 @@ public class MapParser {
 		
 		for (int id = 0; id < numNodes; id ++) {
 			lexer.checkInteger(id);			
-			lexer.checkChar(':');
+			lexer.checkSymbol(':');
 			
 			this.nodes[id] = new NodeInfo(id);			
 		
@@ -113,21 +116,21 @@ public class MapParser {
 				attrValue = this.nodeAttributes.get(a);
 				
 				if (attrValue.equals("label")) {
-					this.nodes[id].setLabel(lexer.getString()); 
+					this.nodes[id].setLabel(lexer.readString()); 
 				
 				} else if (attrValue.equals("importance")) {
-					this.nodes[id].setImportance(lexer.getDecimal()); 
+					this.nodes[id].setImportance(lexer.readDecimal()); 
 				
 				} else if (attrValue.equals("2d-position")) {
-					lexer.checkChar('(');
-					x = lexer.getInteger();
-					lexer.checkChar(',');
-					y = lexer.getInteger();
-					lexer.checkChar(')');
+					lexer.checkSymbol('(');
+					x = lexer.readInteger();
+					lexer.checkSymbol(',');
+					y = lexer.readInteger();
+					lexer.checkSymbol(')');
 					this.nodes[id].set2Dposition(x, y);
 					
 				} else {
-					throw new MapParsingException("Unsupported node attribute : " + attrValue);
+					throw new YapsParsingException("Unsupported node attribute : " + attrValue);
 
 				}
 			}
@@ -137,33 +140,33 @@ public class MapParser {
 
 	}
 
-	private void parseEdges() throws MapParsingException {
+	private void parseEdges() throws YapsParsingException {
 		lexer.checkString("edges");
-		lexer.checkChar(':');
+		lexer.checkSymbol(':');
 		
-		int numEdges = lexer.getInteger();
+		int numEdges = lexer.readInteger();
 		
 		if (numEdges <= 0) {
-			throw new MapParsingException("Invalid number of edges: " + numEdges);
+			throw new YapsParsingException("Invalid number of edges: " + numEdges);
 		}
 		this.edges = new EdgeInfo[numEdges];
 		
 		lexer.advanceLines();
 		lexer.checkString("edges-attributes");
-		lexer.checkChar(':');
+		lexer.checkSymbol(':');
 		
 		String attr;
 		char c;
 		
 		do {
-			attr = lexer.getString();
+			attr = lexer.readString();
 			edgeAttributes.add(attr);
 			
 			if (attr.equals("length")) {
 				this.hasLengths = true;	
 			}
 			
-			c = lexer.getSymbol();
+			c = lexer.readSymbol();
 		} while (c == ',');
 		
 		lexer.advanceLines();
@@ -177,15 +180,15 @@ public class MapParser {
 		for (int id = 0; id < numEdges; id ++) {
 			lexer.checkInteger(id);
 			
-			nodeFrom = lexer.getInteger();
-			directed = (lexer.getEdgeType() == '>');
-			nodeTo = lexer.getInteger();
+			nodeFrom = lexer.readInteger();
+			directed = (lexer.readEdgeType() == '>');
+			nodeTo = lexer.readInteger();
 			
 			if (directed) {
 				this.isDirected = true;
 			}
 			
-			lexer.checkChar(':');
+			lexer.checkSymbol(':');
 			
 			this.edges[id] = new EdgeInfo(id, directed, nodeFrom, nodeTo);
 			double length;
@@ -194,18 +197,18 @@ public class MapParser {
 				attrValue = this.edgeAttributes.get(a);
 				
 				if (attrValue.equals("label")) {
-					this.edges[id].setLabel(lexer.getString()); 
+					this.edges[id].setLabel(lexer.readString()); 
 				
 				} else if (attrValue.equals("length")) {
-					length = lexer.getDecimal();
+					length = lexer.readDecimal();
 					if (length > 0) {
 						this.edges[id].setLength(length);
 					} else {
-						throw new MapParsingException("Invalid edge length: " + length);
+						throw new YapsParsingException("Invalid edge length: " + length);
 					}
 				
 				} else {
-					throw new MapParsingException("Unsupported edge attribute : " + attrValue);
+					throw new YapsParsingException("Unsupported edge attribute : " + attrValue);
 
 				}
 			}
@@ -219,18 +222,18 @@ public class MapParser {
 		
 	}
 	
-	public static void main(String[] args) throws MapParsingException {
-		MapParser map = new MapParser();
+	public static void main(String[] args) throws YapsParsingException {
+		MapParser parser = new MapParser();
 		
-		map.loadFromFile("map-example.ymf");
+		parser.loadFromFile("map-example.ymf");
 		
-		System.out.println(map.mapName);
-		System.out.println(map.nodeAttributes);
-		for (int i = 0; i < map.nodes.length; i++) {
-			System.out.println(map.nodes[i]);
+		System.out.println(parser.mapName);
+		System.out.println(parser.nodeAttributes);
+		for (int i = 0; i < parser.nodes.length; i++) {
+			System.out.println(parser.nodes[i]);
 		}
-		for (int i = 0; i < map.edges.length; i++) {
-			System.out.println(map.edges[i]);
+		for (int i = 0; i < parser.edges.length; i++) {
+			System.out.println(parser.edges[i]);
 		}
 		
 	}

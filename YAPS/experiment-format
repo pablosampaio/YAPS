@@ -1,18 +1,18 @@
 
-#YAPS Simulation-set Format 1
+#YAPS Experiment Format 1
 
 name "DIRECTED-FULLTIME"
 
 sim-time 5000
 (opt)sim-time-start-to-eval 0  #before this, visiting information is discarded for the metrics
  
-repeated-executions 2  #how many times each pair (map,initial-position) is re-executed -- pode ser dispensado, basta repetir posicoes iniciais abaixo...
+(opt)repeated-executions 2  #how many times each pair (map,initial-position) is re-executed -- pode ser dispensado, basta repetir posicoes iniciais abaixo...
 
 (opt)map-directory "maps" #relative to this directory; otherwise looks in current
 
 map "MAP_A" 
-map-agents: 1, 1, 3, 3, 9, 9
-map-agents-positions
+map-societies: 1, 1, 3, 3, 9, 9
+map-societies-info: name, start-node
 	0
 	3
 	0 1 2 

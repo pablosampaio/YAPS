@@ -1,5 +1,6 @@
 package yaps.graph_library;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -122,6 +123,7 @@ public class Graph {
 	}
 	
 	//otimizado para: lists
+	//obs.: getOutEdges is more memory-efficient e may be faster
 	public List<Integer> getSuccessors(int node) {
 		List<Integer> succ = new LinkedList<Integer>();
 		
@@ -146,7 +148,7 @@ public class Graph {
 		List<Edge> succ = new LinkedList<Edge>();
 		
 		if (representation != Representation.MATRIX) {
-			succ = new LinkedList<Edge>(adjacencies[source]);
+			succ = Collections.unmodifiableList(adjacencies[source]);
 			
 		} else {
 			for (int u = 0; u < matrix.length; u++) {

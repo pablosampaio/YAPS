@@ -1,4 +1,6 @@
 
+# YAPS Map Format
+
 map MAP_X 
 topology-tags: directed, edge-weighted #define a set of possible values, parser won't check!
 
