@@ -23,26 +23,29 @@ public class VisitsList {
 	}
 
 	public VisitsList(List<Visit> visits) {
-		this.visitList = new ArrayList<Visit>(visits);
-		this.lastTime = visits.get(visits.size() - 1).time;
+		this.visitList = new ArrayList<Visit>(visits.size());
+		this.lastTime = 0;
+		for (Visit v: visits){
+			this.addVisit(v);
+		}
 	}
 	
 	public void addVisit(Visit visit) {
 		if (visit.time < this.lastTime) {
-			throw new IllegalArgumentException("Visit inserted in wrong order!");
+			this.orderedAddVisit(visit);
 		}
 		visitList.add(visit);
 		this.lastTime = visit.time;
 	}
 	
-	public void addVisit(int time, int agent, int node) {
-		addVisit(new Visit(time, agent, node));
+	public void addVisit(int time, int node, int agent) {
+		addVisit(new Visit(time, node, agent));
 	}
 
 	public void addVisit(int time, int node) {
-		visitList.add(new Visit(time, -1, node));
+		visitList.add(new Visit(time, node, -1));
 	}
-	
+
 	public int getNumVisits() {
 		return visitList.size();
 	}
@@ -63,11 +66,11 @@ public class VisitsList {
 		return new VisitsList(filteredVisits);
 	}
 
-	public VisitsList filterByVertex(int vertex) {
+	public VisitsList filterByVertex(int node) {
 		List<Visit> filteredVisits = new LinkedList<Visit>();
 		
 		for (Visit visit : visitList) {
-			if (visit.node == vertex) {
+			if (visit.node == node) {
 				filteredVisits.add(visit);
 			}
 		}
@@ -101,5 +104,68 @@ public class VisitsList {
 		return new VisitsList(filteredVisits);
 	}
 
+	private void orderedAddVisit(Visit v){	
+		int left = 0;
+		int right = this.visitList.size();
+		int midle = (left + right)/2;
+		
+		Visit u = this.visitList.get(midle);
+		
+		while (left < right - 1) {
+			if (v.time > u.time) {
+				left = midle;
+			} else {
+				right = midle;
+			}
+			
+			midle = (left + right)/2;
+			u = this.visitList.get(midle);
+		}
+		
+		if (v.time > u.time) {
+			this.visitList.add(midle + 1, v);
+		} else {
+			this.visitList.add(midle, v);
+		}		
+	}
 
+	@Override
+	public String toString() {		
+		if(this.visitList.size() < 20){
+			return "VisitsList : lastTime=" + lastTime + " visitList=" + visitList;
+		}		
+		return "VisitsList : lastTime=" + lastTime + " visitListSize=" + this.visitList.size();
+	}
+
+	public void addVisitList(VisitsList other) {
+		List<Visit> newList = new ArrayList<Visit>(this.visitList.size() + other.visitList.size());
+		Visit u, v;
+		int i = 0, j = 0;
+		
+		while (i < this.visitList.size() && j < other.visitList.size()){
+			u = this.visitList.get(i);
+			v = other.visitList.get(j);
+			
+			if (u.time < v.time) {
+				newList.add(u);
+				i++;
+			} else {
+				newList.add(v);
+				j++;
+			}			
+		}
+		
+		while (j < other.visitList.size()){
+			newList.add(other.visitList.get(j));
+			j++;
+		}		
+		while (i < this.visitList.size()){
+			newList.add(this.visitList.get(i));
+			i++;
+		}
+
+		this.lastTime = (this.lastTime > other.lastTime ? this.lastTime : other.lastTime);
+		this.visitList = newList;		
+	}
+	
 }

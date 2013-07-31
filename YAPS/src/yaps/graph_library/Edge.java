@@ -24,7 +24,7 @@ public class Edge {
 	}
 
 	Edge(int ident, int source, int target, double weight) {
-		this(-1, source, target, weight, true);
+		this(ident, source, target, weight, true);
 	}
 	
 	Edge(int source, int target) {
@@ -68,7 +68,8 @@ public class Edge {
 	}
 	
 	public String toString() {
-		return "(n" + this.sourceId + ",n" + this.targetId + ") c=" + this.length;
+		String edgeRepr = directed? "->" : "--";
+		return "e" + this.identifier + "(n" + this.sourceId + edgeRepr + "n" + this.targetId + ", " + this.length +")";
 	}
 	
 }

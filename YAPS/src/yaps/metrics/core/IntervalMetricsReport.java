@@ -73,7 +73,7 @@ public class IntervalMetricsReport {
 	 * Maximum interval between consecutive visits, considering all 
 	 * intervals from all nodes.
 	 */
-	public double getMaxInterval() {
+	public double getMaximumInterval() {
 		return allIntervals.max();
 	}
 	

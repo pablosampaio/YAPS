@@ -14,10 +14,10 @@ import java.util.StringTokenizer;
 public class GraphReader {
 
 	public static Graph readAdjacencyList(String file) throws IOException {
-		return readAdjacencyList(file, Representation.MIXED);
+		return readAdjacencyList(file, GraphDataRepr.MIXED);
 	}
 	
-	public static Graph readAdjacencyList(String file, Representation rep) throws IOException {
+	public static Graph readAdjacencyList(String file, GraphDataRepr rep) throws IOException {
 		BufferedReader inputFile = new BufferedReader(new FileReader(file));
 
 		StringTokenizer tokenizer;
@@ -74,7 +74,7 @@ public class GraphReader {
 		
 		int numVertices = Integer.parseInt(tokenizer.nextToken()); //number of edges is ignored
 		String graphName = file.substring(file.lastIndexOf('\\') + 1, file.lastIndexOf('.'));
-		Graph graph = new Graph(numVertices, Representation.MIXED);
+		Graph graph = new Graph(numVertices, GraphDataRepr.MIXED);
 	
 		int v, succ, weight;
 		line = inputFile.readLine();
@@ -116,7 +116,7 @@ public class GraphReader {
 		}
 
 		//System.out.printf("Graph named %s, %sdirected, with %s nodes\n", graphName, directed?"":"UN", numNodes);
-		Graph graph = new Graph(numNodes, Representation.MIXED);
+		Graph graph = new Graph(numNodes, GraphDataRepr.MIXED);
 		
 		while (line.startsWith("<edge")) {
 			parts = line.split("\"");
@@ -164,7 +164,7 @@ public class GraphReader {
 		int numNodes = Integer.parseInt(line);
 
 		System.out.printf("Graph named %s, with %s nodes\n", graphName, numNodes);
-		Graph graph = new Graph(numNodes, Representation.MIXED);
+		Graph graph = new Graph(numNodes, GraphDataRepr.MIXED);
 		
 		line = inputFile.readLine();
 		String weightType = line.substring(line.indexOf("EDGE_WEIGHT_TYPE:")+17).trim();

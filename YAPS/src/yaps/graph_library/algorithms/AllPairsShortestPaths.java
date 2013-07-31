@@ -2,7 +2,7 @@ package yaps.graph_library.algorithms;
 
 import yaps.graph_library.Graph;
 import yaps.graph_library.Path;
-import yaps.graph_library.Representation;
+import yaps.graph_library.GraphDataRepr;
 
 
 public class AllPairsShortestPaths {
@@ -127,7 +127,7 @@ public class AllPairsShortestPaths {
 	 */
 	public Graph toCompleteDistancesGraph() {
 		int order = this.distance.length;
-		Graph graph = new Graph(order, Representation.MIXED);
+		Graph graph = new Graph(order, GraphDataRepr.MIXED);
 		
 		for (int v = 0; v < order; v++) {
 			for (int x = 0; x < order; x++) {

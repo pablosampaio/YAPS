@@ -10,18 +10,20 @@ public class Visit {
 	public final int agent;
 	public final int node;
 	
-	Visit(long t, int vertex, int agent) {
+	Visit(long t, int node, int agent) {
 		this.time = t;
-		this.node = vertex;
+		this.node = node;
 		this.agent = agent;
 	}
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		
-		builder.append(time); builder.append(' ');
-		builder.append(agent); builder.append(' ');
-		builder.append(node);
+		builder.append('(');
+		builder.append("t=");builder.append(time); builder.append(' ');
+		builder.append("n=");builder.append(node);builder.append(' ');
+		builder.append("a=");builder.append(agent);
+		builder.append(')');
 		
 		return builder.toString();
 	}

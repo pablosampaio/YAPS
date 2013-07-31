@@ -25,23 +25,23 @@ public class Graph {
 	private Edge[][]     matrix;      // adjacencies matrix
 	private List<Edge>[] adjacencies; // adjacencies lists
 	
-	private  Representation representation; // indicate which of the structures above are used
+	private  GraphDataRepr representation; // indicate which of the structures above are used
 	
 	
 	public Graph(int numVertices) {
-		this(numVertices, Representation.LISTS);
+		this(numVertices, GraphDataRepr.LISTS);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Graph(int numVertices, Representation r) {
+	public Graph(int numVertices, GraphDataRepr r) {
 		this.numNodes = numVertices;
 		this.numEdges = 0;
-		this.representation = (r == null) ? Representation.LISTS : r;			
+		this.representation = (r == null) ? GraphDataRepr.LISTS : r;			
 		
-		if (r != Representation.LISTS) {
+		if (r != GraphDataRepr.LISTS) {
 			matrix = new Edge[numVertices][numVertices];
 		}
-		if (r != Representation.MATRIX) {
+		if (r != GraphDataRepr.MATRIX) {
 			adjacencies = new LinkedList[numVertices];
 			for (int i = 0; i < numVertices; i++) {
 				adjacencies[i] = new LinkedList<Edge>();
@@ -63,10 +63,10 @@ public class Graph {
 		if (existsEdge(v, u)) {
 			throw new IllegalArgumentException("Edge from " + v + " to " + u + " already exist!");	
 		}
-		if (representation != Representation.MATRIX) {
+		if (representation != GraphDataRepr.MATRIX) {
 			adjacencies[v].add(edge);
 		}
-		if (representation != Representation.LISTS) {
+		if (representation != GraphDataRepr.LISTS) {
 			matrix[v][u] = edge;
 		}
 	}
@@ -81,10 +81,10 @@ public class Graph {
 
 	//otimizado para: matrix
 	public void removeEdge(int v, int u) {
-		if (representation != Representation.LISTS) {
+		if (representation != GraphDataRepr.LISTS) {
 			matrix[v][u] = null;
 		}
-		if (representation != Representation.MATRIX) {
+		if (representation != GraphDataRepr.MATRIX) {
 			adjacencies[v].remove(new Edge(v,u));
 		}		
 	}
@@ -99,7 +99,7 @@ public class Graph {
 	
 	//otimizado para: matrix, mixed
 	public boolean existsEdge(int v, int u) {
-		if (representation != Representation.LISTS) {
+		if (representation != GraphDataRepr.LISTS) {
 			return matrix[v][u] != null;
 		} else {
 			return adjacencies[v].contains(new Edge(v,u));
@@ -108,7 +108,7 @@ public class Graph {
 
 	//otimizado para: matrix, mixed
 	public double getLength(int source, int target) {
-		if (representation != Representation.LISTS) {
+		if (representation != GraphDataRepr.LISTS) {
 			return matrix[source][target].getLength();
 		
 		} else {
@@ -127,7 +127,7 @@ public class Graph {
 	public List<Integer> getSuccessors(int node) {
 		List<Integer> succ = new LinkedList<Integer>();
 		
-		if (representation != Representation.MATRIX) {
+		if (representation != GraphDataRepr.MATRIX) {
 			for (Edge e : adjacencies[node]) {
 				succ.add(e.getTargetId());
 			}
@@ -147,7 +147,7 @@ public class Graph {
 	public List<Edge> getOutEdges(int source) {
 		List<Edge> succ = new LinkedList<Edge>();
 		
-		if (representation != Representation.MATRIX) {
+		if (representation != GraphDataRepr.MATRIX) {
 			succ = Collections.unmodifiableList(adjacencies[source]);
 			
 		} else {
@@ -174,13 +174,13 @@ public class Graph {
 		return true;
 	}
 
-	public Representation getRepresentation() {
+	public GraphDataRepr getRepresentation() {
 		return representation;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void changeRepresentation(Representation newRepresentation) {
-		Representation oldRepresetation = getRepresentation();
+	public void changeRepresentation(GraphDataRepr newRepresentation) {
+		GraphDataRepr oldRepresetation = getRepresentation();
 		if (oldRepresetation == newRepresentation) {
 			return;
 		}
@@ -191,12 +191,12 @@ public class Graph {
 		int numVertices = getNumNodes();
 		List<Edge> outEdges;
 
-		if (newRepresentation != Representation.LISTS 
-				&& oldRepresetation == Representation.LISTS) {
+		if (newRepresentation != GraphDataRepr.LISTS 
+				&& oldRepresetation == GraphDataRepr.LISTS) {
 			mat_ = new Edge[numVertices][numVertices];
 		}
-		if (newRepresentation != Representation.MATRIX
-				&& oldRepresetation == Representation.MATRIX) {
+		if (newRepresentation != GraphDataRepr.MATRIX
+				&& oldRepresetation == GraphDataRepr.MATRIX) {
 			adj_ = new LinkedList[numVertices];
 			for (int i = 0; i < numVertices; i++) {
 				adj_[i] = new LinkedList<Edge>();
@@ -215,10 +215,10 @@ public class Graph {
 			}
 		}
 		
-		if (representation == Representation.MATRIX) {
+		if (representation == GraphDataRepr.MATRIX) {
 			this.adjacencies = null;
 		}
-		if (representation == Representation.LISTS) {
+		if (representation == GraphDataRepr.LISTS) {
 			this.matrix = null;
 		}
 		if (adj_ != null) {
@@ -258,7 +258,7 @@ public class Graph {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		if (representation != Representation.LISTS) {
+		if (representation != GraphDataRepr.LISTS) {
 			builder.append("\n");
 			for (int i = 0; i < matrix.length; i++) {
 				for (int j = 0; j < matrix.length; j++) {
@@ -269,7 +269,7 @@ public class Graph {
 			}
 		
 		}
-		if (representation != Representation.MATRIX) {
+		if (representation != GraphDataRepr.MATRIX) {
 			builder.append("\n");
 			for (int u = 0; u < adjacencies.length; u++) {
 				builder.append("Adj[");

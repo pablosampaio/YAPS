@@ -1,7 +1,7 @@
 package yaps.graph_library;
 
 
-public enum Representation {
+public enum GraphDataRepr {
 	MATRIX ,
 	LISTS,
 	MIXED;

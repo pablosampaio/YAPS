@@ -30,7 +30,7 @@ public class TestMetrics {
 		System.out.printf(" - desvio padrao dos intervalos: %.3f \n", intervalReport.getStdDevOfIntervals());
 		System.out.printf(" - intervalo medio: %.3f \n", intervalReport.getAverageInterval());
 		System.out.printf(" - intervalo quadratico medio: %.3f \n", intervalReport.getQuadraticMeanOfIntervals());
-		System.out.printf(" - intervalo maximo: %.3f \n", intervalReport.getMaxInterval());
+		System.out.printf(" - intervalo maximo: %.3f \n", intervalReport.getMaximumInterval());
 
 		System.out.println();
 		System.out.println(" ===== OCIOSIDADES =====");

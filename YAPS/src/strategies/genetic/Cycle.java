@@ -3,28 +3,32 @@ package strategies.genetic;
 import java.util.List;
 
 import yaps.graph_library.Graph;
-import yaps.graph_library.PathFunctions;
+import yaps.graph_library.Path;
+import yaps.graph_library.algorithms.AllPairsShortestPaths;
 
 
 //ciclos são imutaveis, a logica da classe Solution depende dessa propriedade
 public class Cycle {
-	List<Integer> vertexes; // don't need to reinsert the first
+	Path vertexes; // don't need to reinsert the first
 	double cost;
 	
 	// criar um displacement aqui???
 	
 	Cycle(List<Integer> vertices) {
-		this.vertexes = vertices;
+		this.vertexes = new Path(vertices);
 	}
 	
 	// criar metodos para trocar vertices e para fazer as alteracoes das heuristicas de TSP 
 
 	public void setCost(Graph graph) {
-		this.vertexes = PathFunctions.expandShortestPaths(this.vertexes, graph);
-		this.cost = PathFunctions.getCost(vertexes, graph);
+		AllPairsShortestPaths paths = new AllPairsShortestPaths();
+		paths.computeShortestPaths(graph);
+		this.vertexes = this.vertexes.expandShortestPaths(paths);
+		this.cost = this.vertexes.getCost(graph);
 	}
 	
 	public String toString() {
 		return vertexes.toString() + " : " + this.cost;
 	}
+	
 }
