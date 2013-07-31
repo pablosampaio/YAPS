@@ -2,7 +2,7 @@ package yaps.graph_library;
 
 
 /**
- * Represents the directed edge "source -> target".
+ * Represents the directed edge (or arc) "source -> target".
  *   
  * @author Pablo A. Sampaio
  */
@@ -27,19 +27,30 @@ public class Edge {
 		this(ident, source, target, weight, true);
 	}
 	
-	Edge(int source, int target) {
+	public Edge(int source, int target) {
 		this(-1, source, target, 1.0d, true);
 	}
 	
+	/**
+	 * The unique sequential identifier of this edge.
+	 */
 	public int getId() {
 		return this.identifier;
 	}
-	
-	public int getSourceId() {
+
+	/**
+	 * Returns the node from which this edge "departs".
+	 * Also called "head" node.  
+	 */
+	public int getSource() {
 		return sourceId;
 	}
 
-	public int getTargetId() {
+	/**
+	 * Returns the node in which this edge "arrives".
+	 * Also called "tail" node.  
+	 */
+	public int getTarget() {
 		return targetId;
 	}
 

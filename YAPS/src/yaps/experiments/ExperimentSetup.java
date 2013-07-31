@@ -74,5 +74,6 @@ public class ExperimentSetup {
 	
 	public List<SimulationInfo> getSimulationList(String map) {
 		return this.simInfo.get(map);
-	}	
+	}
+	
 }

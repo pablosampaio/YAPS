@@ -10,19 +10,19 @@ public class RandomUtil {
 	//TODO: usar outro gerador, porque o de Java é ruim!
 	private static long SEED = 1613; 
 	private static Random rand = new Random(SEED);
+
+	/**
+	 * Returns a random integer, uniformly distributed.
+	 */
+	public static int chooseInteger() {
+		return rand.nextInt();
+	}
 	
 	/**
 	 * Randomly chooses an integer from the inclusive range "from .. to".  
 	 */
 	public static int chooseInteger(int from, int to) {
 		return from + rand.nextInt(to-from+1);
-	}
-	
-	/**
-	 * Returns a random integer, uniformly distributed.
-	 */
-	public static int chooseInteger() {
-		return rand.nextInt();
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class RandomUtil {
 			}
 		}
 		
-		return weights.length - 1; //não deveria acontecer!
+		return weights.length - 1; //nunca deveria acontecer!
 	}
 
 	/**

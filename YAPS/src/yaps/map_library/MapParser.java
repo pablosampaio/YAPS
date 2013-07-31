@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import yaps.util.YapsLexer;
-import yaps.util.YapsParsingException;
+import yaps.files.YapsLexer;
+import yaps.files.YapsParsingException;
 
 
 /**
@@ -59,7 +59,7 @@ public class MapParser {
 	}
 	
 	private void parse() throws YapsParsingException {
-		lexer.checkString("map");	
+		lexer.readString("map");	
 		this.mapName = lexer.readString();
 
 		lexer.advanceLines();
@@ -71,8 +71,8 @@ public class MapParser {
 	}
 
 	private void parseNodes() throws YapsParsingException {
-		lexer.checkString("nodes");
-		lexer.checkSymbol(':');
+		lexer.readString("nodes");
+		lexer.readSymbol(':');
 		
 		int numNodes = lexer.readInteger();
 		
@@ -82,11 +82,10 @@ public class MapParser {
 		this.nodes = new NodeInfo[numNodes];
 		
 		lexer.advanceLines();
-		lexer.checkString("nodes-attributes");
-		lexer.checkSymbol(':');
+		lexer.readString("nodes-attributes");
+		lexer.readSymbol(':');
 		
 		String attr;
-		char c;
 		
 		do {
 			attr = lexer.readString();
@@ -98,8 +97,7 @@ public class MapParser {
 				this.has2Dcoordinates = true;	
 			}
 			
-			c = lexer.readSymbol();
-		} while (c == ',');
+		} while (lexer.checkSymbol(','));
 		
 		lexer.advanceLines();
 
@@ -107,8 +105,8 @@ public class MapParser {
 		String attrValue;
 		
 		for (int id = 0; id < numNodes; id ++) {
-			lexer.checkInteger(id);			
-			lexer.checkSymbol(':');
+			lexer.readInteger(id);			
+			lexer.readSymbol(':');
 			
 			this.nodes[id] = new NodeInfo(id);			
 		
@@ -122,11 +120,11 @@ public class MapParser {
 					this.nodes[id].setImportance(lexer.readDecimal()); 
 				
 				} else if (attrValue.equals("2d-position")) {
-					lexer.checkSymbol('(');
+					lexer.readSymbol('(');
 					x = lexer.readInteger();
-					lexer.checkSymbol(',');
+					lexer.readSymbol(',');
 					y = lexer.readInteger();
-					lexer.checkSymbol(')');
+					lexer.readSymbol(')');
 					this.nodes[id].set2Dposition(x, y);
 					
 				} else {
@@ -141,8 +139,8 @@ public class MapParser {
 	}
 
 	private void parseEdges() throws YapsParsingException {
-		lexer.checkString("edges");
-		lexer.checkSymbol(':');
+		lexer.readString("edges");
+		lexer.readSymbol(':');
 		
 		int numEdges = lexer.readInteger();
 		
@@ -152,11 +150,10 @@ public class MapParser {
 		this.edges = new EdgeInfo[numEdges];
 		
 		lexer.advanceLines();
-		lexer.checkString("edges-attributes");
-		lexer.checkSymbol(':');
+		lexer.readString("edges-attributes");
+		lexer.readSymbol(':');
 		
 		String attr;
-		char c;
 		
 		do {
 			attr = lexer.readString();
@@ -166,8 +163,7 @@ public class MapParser {
 				this.hasLengths = true;	
 			}
 			
-			c = lexer.readSymbol();
-		} while (c == ',');
+		} while (lexer.checkSymbol(','));
 		
 		lexer.advanceLines();
 		
@@ -178,7 +174,7 @@ public class MapParser {
 		this.isDirected = false;
 		
 		for (int id = 0; id < numEdges; id ++) {
-			lexer.checkInteger(id);
+			lexer.readInteger(id);
 			
 			nodeFrom = lexer.readInteger();
 			directed = (lexer.readEdgeType() == '>');
@@ -188,7 +184,7 @@ public class MapParser {
 				this.isDirected = true;
 			}
 			
-			lexer.checkSymbol(':');
+			lexer.readSymbol(':');
 			
 			this.edges[id] = new EdgeInfo(id, directed, nodeFrom, nodeTo);
 			double length;

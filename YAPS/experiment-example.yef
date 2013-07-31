@@ -9,7 +9,7 @@ repeated-executions 2
 maps-directory "maps"
 
 map "map_a.ymf"
-map-societies: 1, 1, 3, 3, 9, 9
+map-societies: 1, 1, 3, 3, 9, 9	
 	ag01 0
 	ag01 3
 	ag01 3 ag02 2 ag03 7  

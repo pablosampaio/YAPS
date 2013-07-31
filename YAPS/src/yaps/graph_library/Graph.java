@@ -129,7 +129,7 @@ public class Graph {
 		
 		if (representation != GraphDataRepr.MATRIX) {
 			for (Edge e : adjacencies[node]) {
-				succ.add(e.getTargetId());
+				succ.add(e.getTarget());
 			}
 			
 		} else {
@@ -164,8 +164,8 @@ public class Graph {
 	public boolean isSymmetrical() {		
 		for (int v = 0; v < getNumNodes(); v++) {
 			for (Edge edge : this.getOutEdges(v)) {
-				if (! existsEdge(edge.getTargetId(), edge.getSourceId()) 
-						|| getLength(edge.getTargetId(), edge.getSourceId()) != getLength(edge.getSourceId(), edge.getTargetId())) {
+				if (! existsEdge(edge.getTarget(), edge.getSource()) 
+						|| getLength(edge.getTarget(), edge.getSource()) != getLength(edge.getSource(), edge.getTarget())) {
 					return false;
 				}
 			}
@@ -207,7 +207,7 @@ public class Graph {
 			outEdges = getOutEdges(v);
 			for (Edge e : outEdges) {
 				if (mat_ != null) {
-					mat_[v][e.getTargetId()] = e;
+					mat_[v][e.getTarget()] = e;
 				}
 				if (adj_ != null) {
 					adj_[v].add(e);

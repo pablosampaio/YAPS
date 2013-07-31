@@ -1,4 +1,4 @@
-package yaps.util;
+package yaps.files;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,11 +34,18 @@ public class YapsLexer {
 		}
 	}
 	
+	/**
+	 * Line which is being read in the input stream. Lines are counted based 
+	 * only on '\n' characters. 
+	 */
 	public int getCurrentLine() {
 		return this.line;
 	}
 	
-	public boolean eof() {
+	/**
+	 * Indicates if the end of file was reached. 
+	 */
+	public boolean reachedEof() {
 		return this.nextChar == -1;
 	}
 	
@@ -50,6 +57,9 @@ public class YapsLexer {
 		}
 	}
 	
+	/**
+	 * Advances line breaks (at least one) until a non-space character is found. 
+	 */
 	public void advanceLines() throws YapsParsingException {
 		int oldLine = this.line;
 
@@ -64,26 +74,27 @@ public class YapsLexer {
 			throw new YapsParsingException("line break", "" + (char)nextChar, this.line); 
 		}
 	}
-	
+
+	/**
+	 * Advances all consecutive spaces in the current line.  
+	 */
 	private void advanceSpaces() throws YapsParsingException {
 		while (nextChar == ' ' || nextChar == '\t') {
 			advanceNextChar();
 		}
 		if (nextChar == -1) {
-			throw new YapsParsingException("Unexpected end of file!");
+			throw new YapsParsingException("Unexpected end of file");
 		}
 	}
 	
+	/**
+	 * Reads and returns a non-empty string formed by [0-9a-zA-z\-_]+.
+	 * If there is no such string in the input stream, throws an exception.  
+	 */
 	public String readString() throws YapsParsingException {
 		advanceSpaces();
 		
 		StringBuilder builder = new StringBuilder();
-		while (nextChar >= 'a' && nextChar <= 'z'
-				|| nextChar >= 'A' && nextChar <= 'Z'
-				|| nextChar == '-' || nextChar == '_') {
-			builder.append((char)nextChar);
-			advanceNextChar();
-		}
 		while (nextChar >= '0' && nextChar <= '9'
 				|| nextChar >= 'a' && nextChar <= 'z'
 				|| nextChar >= 'A' && nextChar <= 'Z'
@@ -98,8 +109,13 @@ public class YapsLexer {
 		
 		return builder.toString();
 	}
-	
-	public void checkString(String requiredStr) throws YapsParsingException {
+
+	/**
+	 * Reads and discards a non-empty string formed by [0-9a-zA-z\-_]+.
+	 * If there is no string in input or if the string is different, throws 
+	 * an exception. 
+	 */
+	public void readString(String requiredStr) throws YapsParsingException {
 		String readStr = this.readString();
 		if (! readStr.equals(requiredStr)) {
 			throw new YapsParsingException(requiredStr, readStr, this.line);
@@ -120,7 +136,7 @@ public class YapsLexer {
 		return Integer.parseInt(builder.toString());
 	}
 
-	public void checkInteger(int expectedNum) throws YapsParsingException {
+	public void readInteger(int expectedNum) throws YapsParsingException {
 		int readNum = this.readInteger();
 		if (readNum != expectedNum) {
 			throw new YapsParsingException(""+expectedNum, ""+readNum, this.line);
@@ -148,7 +164,7 @@ public class YapsLexer {
 	
 	public char readEdgeType() throws YapsParsingException {
 		advanceSpaces();
-		checkSymbol('-');
+		readSymbol('-');
 		
 		char c = (char)nextChar;
 		if (c == '-' || c == '>') {
@@ -170,17 +186,22 @@ public class YapsLexer {
 			throw new YapsParsingException("Invalid boolean value: " + str + ", in line " + this.line);
 		}
 	}
-	
-	public char readSymbol() throws YapsParsingException {
-		advanceSpaces();
 
-		char symbol = (char)this.nextChar;
-		advanceNextChar();
-		
-		return symbol;
+	/**
+	 * Slightly different semantics from "read" methods:<br> 
+	 * Returns a boolean indicating if the next char matches the given character, 
+	 * but does not advance the input stream if they don't match.  
+	 */
+	public boolean checkSymbol(char c) throws YapsParsingException {
+		advanceSpaces();
+		if (this.nextChar == c) {
+			advanceNextChar();
+			return true;
+		}
+		return false;
 	}
 	
-	public void checkSymbol(char c) throws YapsParsingException {
+	public void readSymbol(char c) throws YapsParsingException {
 		advanceSpaces();
 		if (this.nextChar == c) {
 			advanceNextChar();
@@ -189,9 +210,13 @@ public class YapsLexer {
 		}
 	}
 
-	public String readPathString() throws YapsParsingException {
+	/**
+	 * Returns a string delimited by quotes (") which (potentially) can describe 
+	 * a path in the file system.  
+	 */
+	public String readFilePathString() throws YapsParsingException {
 		advanceSpaces();
-		checkSymbol('\"');
+		readSymbol('\"');
 		
 		StringBuilder builder = new StringBuilder();
 		while (nextChar != -1 && nextChar != '\n' && nextChar != '\\' && nextChar != '/' 
@@ -205,7 +230,7 @@ public class YapsLexer {
 			throw new YapsParsingException("No path found in line " + this.line);
 		}
 		
-		checkSymbol('\"');	
+		readSymbol('\"');	
 		return builder.toString();
 	}
 

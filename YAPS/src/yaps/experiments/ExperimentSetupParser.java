@@ -7,8 +7,8 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import yaps.util.YapsLexer;
-import yaps.util.YapsParsingException;
+import yaps.files.YapsLexer;
+import yaps.files.YapsParsingException;
 
 
 public class ExperimentSetupParser {
@@ -42,18 +42,18 @@ public class ExperimentSetupParser {
 		do {
 			parseMapSimulations();
 			lexer.advanceLines();
-		} while (!lexer.eof() && lexer.readString().equals("map"));
+		} while (!lexer.reachedEof() && lexer.readString().equals("map"));
 		
 		//accepts "garbage" text in the end 
 	}
 
 	private void parseBasicInfo() throws YapsParsingException {
-		lexer.checkString("experiment");
+		lexer.readString("experiment");
 		experiment = new ExperimentSetup(lexer.readString());
 		
 		lexer.advanceLines();
 		
-		lexer.checkString("fulltime");
+		lexer.readString("fulltime");
 		experiment.setFullTime(lexer.readInteger());
 		lexer.advanceLines();
 
@@ -76,7 +76,7 @@ public class ExperimentSetupParser {
 		}
 		
 		if (token.equals("maps-directory")) {
-			File mapsDir = new File(lexer.readPathString());
+			File mapsDir = new File(lexer.readFilePathString());
 			if (!mapsDir.isDirectory()) {
 				throw new YapsParsingException("Not a directory: " + mapsDir);
 			}
@@ -94,10 +94,9 @@ public class ExperimentSetupParser {
 
 	private void parseMapSimulations() throws YapsParsingException {
 		String filename;
-		char c;
 		File mapFile;
 		
-		filename = lexer.readPathString();
+		filename = lexer.readFilePathString();
 
 		mapFile = new File(experiment.getMapDirectory(), filename);
 		if (! mapFile.exists()) {
@@ -105,14 +104,13 @@ public class ExperimentSetupParser {
 		}
 		lexer.advanceLines();
 
-		lexer.checkString("map-societies");
-		lexer.checkSymbol(':');
+		lexer.readString("map-societies");
+		lexer.readSymbol(':');
 		
 		List<Integer> societiesSizes = new LinkedList<>();
 		do {
 			societiesSizes.add(lexer.readInteger());
-			c = lexer.readSymbol();
-		} while (c == ',');
+		} while (lexer.checkSymbol(','));
 		
 		lexer.advanceLines();
 		
