@@ -14,13 +14,13 @@ import yaps.graph_library.Graph;
  *  
  * @author Pablo A. Sampaio
  */
-public class MaximumBipartiteMatching {
-	private Graph graph;
-	List<Edge> matching;
-	int numMatches;
+public class MaximumBipartiteMatching extends GraphAlgorithm {
+	private List<Edge> matching;
+	private int numMatches;
+	
 	
 	public MaximumBipartiteMatching(Graph g) {
-		this.graph = g;
+		super(g);
 	}
 
 	/**
@@ -45,9 +45,9 @@ public class MaximumBipartiteMatching {
 	 * não testa). 
 	 */
 	public void compute() {
-		HeuristicColoring coloring = new HeuristicColoring();		
-		coloring.bfsColoring(graph);
-		if (coloring.getMaxColor() > 2) {
+		HeuristicMinColoring coloring = new HeuristicMinColoring(graph);		
+		coloring.bfsColoring();
+		if (coloring.getColorsUsed() > 2) {
 			throw new IllegalArgumentException("Graph is not bipartite.");
 		}
 		
@@ -92,9 +92,9 @@ public class MaximumBipartiteMatching {
 	 * An alternative, probably faster, implementation.
 	 */
 	public void computeAlternative() {
-		HeuristicColoring coloring = new HeuristicColoring();
-		coloring.bfsColoring(graph);
-		if (coloring.getMaxColor() > 2) {
+		HeuristicMinColoring coloring = new HeuristicMinColoring(graph);
+		coloring.bfsColoring();
+		if (coloring.getColorsUsed() > 2) {
 			throw new IllegalArgumentException("Graph is not bipartite.");
 		}
 

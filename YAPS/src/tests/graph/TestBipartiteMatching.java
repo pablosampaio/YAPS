@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import yaps.graph_library.Graph;
 import yaps.graph_library.GraphReader;
-import yaps.graph_library.algorithms.HeuristicColoring;
+import yaps.graph_library.algorithms.HeuristicMinColoring;
 import yaps.graph_library.algorithms.MaximumBipartiteMatching;
 
 public class TestBipartiteMatching {
@@ -27,9 +27,9 @@ public class TestBipartiteMatching {
 	
 	
 	public static void testBipartiteness(Graph graph) {
-		HeuristicColoring coloring = new HeuristicColoring();
+		HeuristicMinColoring coloring = new HeuristicMinColoring(graph);
 		
-		coloring.bfsColoring(graph);
+		coloring.bfsColoring();
 		
 		System.out.print("Particao A : ");
 		for (int v = 0; v < graph.getNumNodes(); v++) {

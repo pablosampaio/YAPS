@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import yaps.graph_library.Graph;
 import yaps.graph_library.GraphReader;
-import yaps.graph_library.algorithms.HeuristicColoring;
+import yaps.graph_library.algorithms.HeuristicMinColoring;
 
 
 public class TestProperColoring {
 
 	public static void main(String[] args) throws IOException {
 		Graph graph = GraphReader.readAdjacencyList("src\\tests\\graph\\grafo-11.txt");
-		HeuristicColoring colorer = new HeuristicColoring();
+		HeuristicMinColoring colorer = new HeuristicMinColoring(graph);
 		
 		long time;
 		int colors;
@@ -22,28 +22,28 @@ public class TestProperColoring {
 		 */
 		
 		time = System.currentTimeMillis();
-		colors = colorer.bfsColoring(graph);
+		colors = colorer.bfsColoring();
 		time = System.currentTimeMillis() - time;
 		System.out.printf(">> bfs: %s (%sms)\n", colors, time);
 		
 		printColoring(graph, colorer);
 
 		time = System.currentTimeMillis();
-		colors = colorer.leastConstrainedFirstColoring(graph);
+		colors = colorer.leastConstrainedFirstColoring();
 		time = System.currentTimeMillis() - time;
 		System.out.printf(">> lcf: %s (%sms)\n", colors, time);
 		
 		printColoring(graph, colorer);
 				
 		time = System.currentTimeMillis();
-		colors = colorer.leastConstrainedFirstColoringX(graph);
+		colors = colorer.leastConstrainedFirstColoringX();
 		time = System.currentTimeMillis() - time;
 		System.out.printf(">> lcfx: %s (%sms)\n", colors, time);
 		
 		printColoring(graph, colorer);
 	}
 	
-	private static void printColoring(Graph graph, HeuristicColoring colorer) {
+	private static void printColoring(Graph graph, HeuristicMinColoring colorer) {
 		System.out.print("   coloring:\n   ");
 		
 		for (int i = 0; i < graph.getNumNodes(); i++) {

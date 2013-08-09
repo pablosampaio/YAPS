@@ -17,3 +17,9 @@ Diretrizes para criação das classes para algoritmos
 - valores temporários: deixar como variáveis locais e passar como parâmetros 
   para os métodos internos (em casos excepcionais, valores temporários muito 
   usados podem ser deixados como atributos)
+
+- se houver multiplos algoritmos aproximados (sem que um domine os demais), usar
+  herança entre os algoritmos para permitir usar facilmente (nos códigos clientes) 
+  diferentes algoritmos 
+  => ajustar TSP e coloring
+  
