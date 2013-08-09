@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import yaps.graph_library.algorithms.AllPairsShortestPaths;
+import yaps.graph_library.algorithms.AllShortestPaths;
 
 
 /**
@@ -26,8 +26,7 @@ public class Path extends LinkedList<Integer> {
 	
 
 	/**
-	 * Tests if the (directed) edges of the path really exist 
-	 * in the graph.
+	 * Tests if the (directed) edges used in this path really exist in the graph.
 	 */
 	public boolean isValid(Graph graph) {
 		return getCost(graph) != -1;
@@ -67,7 +66,7 @@ public class Path extends LinkedList<Integer> {
 	 * It should return the same value as: <br>
 	 * getCost( expandShortestPaths(path,graph) , graph) .
 	 */
-	public double getCostExpandingShortestPaths(AllPairsShortestPaths shortest) {
+	public double getCostExpandingShortestPaths(AllShortestPaths shortest) {
 		int n = this.size();
 		int totalCost = 0;
 		double distance;
@@ -91,7 +90,7 @@ public class Path extends LinkedList<Integer> {
 	 * Returns null if one of the paths is not possible in the graph (e.g. if 
 	 * the graph is not strongly connected).
 	 */
-	public Path expandShortestPaths(AllPairsShortestPaths shortest) {
+	public Path expandShortestPaths(AllShortestPaths shortest) {
 		Path realPath = new Path();	
 		realPath.add(this.get(0));
 

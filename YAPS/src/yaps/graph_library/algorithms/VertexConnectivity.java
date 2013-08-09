@@ -5,35 +5,35 @@ import yaps.graph_library.Graph;
 
 /**
  * Calculates the node-connectivity (vertex-connectivity) of the 
- * whole graph or between any pair of nodes.
+ * whole graph or between any given pair of nodes.
  *  
  * @author Pablo A. Sampaio
  */
-public class VertexConnectivity {
-	//TODO: store results here
+public class VertexConnectivity extends GraphAlgorithm {
+	//int[][] connectivity; //store results here
+	private MaximumFlow flowFinder; 
 
-	public VertexConnectivity() {
-
+	public VertexConnectivity(Graph g) {
+		super(g);
+		
+		Graph gunitary = EdgeConnectivity.toUnitaryEdges(graph);
+		this.flowFinder = new MaximumFlow(gunitary);
 	}
 	
-	public int getVertexConnectivity(Graph graph, int u, int v) {
-		Graph gu = EdgeConnectivity.toUnitaryEdges(graph);
-		MaxFlow flowFinder = new MaxFlow();
-		return flowFinder.findMaxFlow(gu, u, v, true);
+	// u e v tem que ser diferentes?
+	public int getVertexConnectivity(int u, int v) {
+		return flowFinder.compute(u, v, true);
 	}
 
-	public int getVertexConnectivity(Graph graph) {
-		Graph gu = EdgeConnectivity.toUnitaryEdges(graph);
-		MaxFlow flowFinder = new MaxFlow();
-		
-		int order = gu.getNumNodes();
-		int minK = gu.getNumNodes();
+	public int getVertexConnectivity() {
+		int order = graph.getNumNodes();
+		int minK = graph.getNumNodes(); //nao seria k-1 ?
 		int k;
 
 		for (int v = 0; v < order; v++) {
 			for (int u = 0; u < order; u++) {
 				if (v != u) {
-					k = flowFinder.findMaxFlow(gu, v, u, true);
+					k = flowFinder.compute(v, u, true);
 					if (k < minK) {
 						minK = k;
 					}
@@ -45,11 +45,8 @@ public class VertexConnectivity {
 		return minK;
 	}
 	
-	public double getAvgVertexConnectivity(Graph graph) {
-		Graph gu = EdgeConnectivity.toUnitaryEdges(graph);
-		MaxFlow flowFinder = new MaxFlow();
-		
-		int order = gu.getNumNodes();
+	public double getAvgVertexConnectivity() {
+		int order = graph.getNumNodes();
 
 		int k;		
 		int count = 0;
@@ -58,7 +55,7 @@ public class VertexConnectivity {
 		for (int v = 0; v < order; v++) {
 			for (int u = 0; u < order; u++) {
 				if (v != u) {
-					k = flowFinder.findMaxFlow(gu, v, u, true);
+					k = flowFinder.compute(v, u, true);
 					
 					avgK += k;
 					count ++;

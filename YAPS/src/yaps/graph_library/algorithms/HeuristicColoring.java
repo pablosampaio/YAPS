@@ -23,14 +23,15 @@ public class HeuristicColoring {
 
 	
 	/**
-	 * Retorna o máximo de cores usadas. 
+	 * Returns the total number of colors used. This is an estimate
+	 * (an upper-bound, indeed) for the cromatic number of the graph. 
 	 */
 	public int getMaxColor() {
 		return maxColor;
 	}
 
 	/**
-	 * Retorna a cor atribuída a cada vértice. 
+	 * Returns the color given to a node. 
 	 */
 	public int getColor(int v) {
 		return coloring[v];
@@ -51,7 +52,7 @@ public class HeuristicColoring {
 		
 		for (int start = 0; start < numVertices; start++) {
 			if (coloring[start] == NOT_COLORED) {
-				bfsColoringLocal(g, start);
+				bfsColoringInternal(g, start);
 			}
 		}
 		
@@ -59,7 +60,7 @@ public class HeuristicColoring {
 	}
 	
 	// faz a pesquisa em largura a partir do vértice "start" 
-	private void bfsColoringLocal(Graph g, int start) {
+	private void bfsColoringInternal(Graph g, int start) {
 		int v;
 		
 		LinkedList<Integer> queue = new LinkedList<Integer>(); 
@@ -84,6 +85,31 @@ public class HeuristicColoring {
 			}
 		}
 		
+	}
+	
+	// Colore o vértice "v" usando números inteiros maiores que zero
+	// como cores. A cor escolhida (e retornada) é o menor número que
+	// não causa choque com os vizinhos
+	private int giveMinColor(int v, Graph g) {
+		int color = 0;
+		boolean colorIsUnique;
+		
+		//ideia: criar array de boolean das cores usadas e escolher a menor posicao nao usada
+		
+		do {
+			color ++;			
+			colorIsUnique = true;
+
+			for (Integer neighbor : g.getSuccessors(v)) {
+				if (coloring[neighbor] == color) {
+					colorIsUnique = false;
+					break;
+				}
+			}
+		
+		} while (!colorIsUnique);
+		
+		return color;
 	}
 	
 	/**
@@ -159,14 +185,14 @@ public class HeuristicColoring {
 				}
 			}
 			
-			unvisited = leastConstrainedFirstSeqColoringXLocal(g, start, vertices, unvisited);
+			unvisited = leastConstrainedFirstColoringXInternal(g, start, vertices, unvisited);
 		}		
 		
 		return maxColor;
 	}
 	
-	// usado por leastConstrainedFirstSeqColoringX
-	public int leastConstrainedFirstSeqColoringXLocal(Graph g, NodeInfo start, NodeInfo[] vertices, int unvisited) {
+	// usado por leastConstrainedFirstColoringX
+	private int leastConstrainedFirstColoringXInternal(Graph g, NodeInfo start, NodeInfo[] vertices, int unvisited) {
 		int v;
 		PQueue<NodeInfo> frontier = new BinHeapPQueue<NodeInfo>(unvisited);
 		
@@ -199,29 +225,6 @@ public class HeuristicColoring {
 		}
 		
 		return unvisited;
-	}
-
-	// Colore o vértice "v" usando números inteiros maiores que zero
-	// como cores. A cor escolhida (e retornada) é o menor número que
-	// não causa choque com os vizinhos
-	private int giveMinColor(int v, Graph g) {
-		int color = 0;
-		boolean colorIsUnique;
-		
-		do {
-			color ++;			
-			colorIsUnique = true;
-
-			for (Integer neighbor : g.getSuccessors(v)) {
-				if (coloring[neighbor] == color) {
-					colorIsUnique = false;
-					break;
-				}
-			}
-		
-		} while (!colorIsUnique);
-		
-		return color;
 	}
 
 	// classe auxiliar, faz a PQueue ordenar pela 

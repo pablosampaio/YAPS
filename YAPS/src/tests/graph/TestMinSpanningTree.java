@@ -14,7 +14,7 @@ public class TestMinSpanningTree {
 		
 		MinimumSpanningTree minTree = new MinimumSpanningTree(graph);
 		
-		minTree.calculateMinTree();
+		minTree.compute();
 
 		/* Custo da árvore esperado no "grafo-11": 39
 		 */

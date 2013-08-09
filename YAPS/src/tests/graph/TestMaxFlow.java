@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import yaps.graph_library.Graph;
 import yaps.graph_library.GraphReader;
-import yaps.graph_library.algorithms.MaxFlow;
+import yaps.graph_library.algorithms.MaximumFlow;
 
 
 public class TestMaxFlow {
@@ -12,15 +12,15 @@ public class TestMaxFlow {
 	public static void main(String[] args) throws IOException {
 		Graph graph = GraphReader.readAdjacencyList("src\\tests\\graph\\grafo-11.txt");
 
-		MaxFlow flow = new MaxFlow();
+		MaximumFlow maxFlow = new MaximumFlow(graph);
 		
-		flow.findMaxFlow(graph, 0, 6);
+		maxFlow.compute(0, 6);
 
 		/* Fluxo maximo esperado no "grafo-11": 12
 		 */
 		System.out.println("Fluxo Máximo:");
-		System.out.println(flow.getMaxFlow());
-		System.out.println("Valor do fluxo máximo: " + flow.getMaxFlowValue());
+		System.out.println(maxFlow.getFlow());
+		System.out.println("Valor do fluxo máximo: " + maxFlow.getFlowValue());
 
 	}
 	

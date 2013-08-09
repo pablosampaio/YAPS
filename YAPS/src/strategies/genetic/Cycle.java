@@ -4,7 +4,7 @@ import java.util.List;
 
 import yaps.graph_library.Graph;
 import yaps.graph_library.Path;
-import yaps.graph_library.algorithms.AllPairsShortestPaths;
+import yaps.graph_library.algorithms.AllShortestPaths;
 
 
 //ciclos são imutaveis, a logica da classe Solution depende dessa propriedade
@@ -21,8 +21,8 @@ public class Cycle {
 	// criar metodos para trocar vertices e para fazer as alteracoes das heuristicas de TSP 
 
 	public void setCost(Graph graph) {
-		AllPairsShortestPaths paths = new AllPairsShortestPaths();
-		paths.computeShortestPaths(graph);
+		AllShortestPaths paths = new AllShortestPaths(graph);
+		paths.compute();
 		this.vertexes = this.vertexes.expandShortestPaths(paths);
 		this.cost = this.vertexes.getCost(graph);
 	}

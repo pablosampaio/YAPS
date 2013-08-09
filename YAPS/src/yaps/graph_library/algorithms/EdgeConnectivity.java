@@ -12,31 +12,33 @@ import yaps.graph_library.Graph;
  *  
  * @author Pablo A. Sampaio
  */
-public class EdgeConnectivity {
-	//TODO: store results here
+public class EdgeConnectivity extends GraphAlgorithm {
+	//int[][] connectivity; //store results here
+	private MaximumFlow flowFinder; 
 	
-	public EdgeConnectivity() {
-
-	}
 	
-	public int getEdgeConnectivity(Graph graph, int u, int v) {
-		Graph gu = toUnitaryEdges(graph);
-		MaxFlow flowFinder = new MaxFlow();
-		return flowFinder.findMaxFlow(gu, u, v, false);
+	public EdgeConnectivity(Graph g) {
+		super(g);		
+		Graph gunitary = toUnitaryEdges(graph);
+		this.flowFinder = new MaximumFlow(gunitary);
 	}
 
-	public int getEdgeConnectivity(Graph graph) {
-		Graph gu = toUnitaryEdges(graph);
-		MaxFlow flowFinder = new MaxFlow();
-		
-		int order = gu.getNumNodes();
-		int minL = gu.getNumNodes();
+	//TODO: calculate once (and store)
+	//u e v tem que ser diferentes?
+	public int getEdgeConnectivity(int u, int v) {
+		return flowFinder.compute(u, v, false);
+	}
+	
+	//TODO: store connectivity of all pairs
+	public int getEdgeConnectivity() {
+		int order = graph.getNumNodes();
+		int minL = graph.getNumNodes(); //nao seria k-1 ?
 		int l;
 
 		for (int v = 0; v < order; v++) {
 			for (int u = 0; u < order; u++) {
 				if (v != u) {
-					l = flowFinder.findMaxFlow(gu, v, u, false);
+					l = flowFinder.compute(v, u, false);
 					if (l < minL) {
 						minL = l;
 					}
@@ -48,11 +50,8 @@ public class EdgeConnectivity {
 		return minL;
 	}
 	
-	public double getAvgEdgeConnectivity(Graph graph) {
-		Graph gu = toUnitaryEdges(graph);
-		MaxFlow flowFinder = new MaxFlow();
-		
-		int order = gu.getNumNodes();
+	public double getAvgEdgeConnectivity() {
+		int order = graph.getNumNodes();
 
 		int l;
 		int count = 0;
@@ -61,7 +60,7 @@ public class EdgeConnectivity {
 		for (int v = 0; v < order; v++) {
 			for (int u = 0; u < order; u++) {
 				if (v != u) {
-					l = flowFinder.findMaxFlow(gu, v, u, false);
+					l = flowFinder.compute(v, u, false);
 					
 					avgL += l;
 					count ++;

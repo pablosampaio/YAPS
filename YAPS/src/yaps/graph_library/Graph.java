@@ -174,13 +174,13 @@ public class Graph {
 		return true;
 	}
 
-	public GraphDataRepr getRepresentation() {
+	public GraphDataRepr getDataRepr() {
 		return representation;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void changeRepresentation(GraphDataRepr newRepresentation) {
-		GraphDataRepr oldRepresetation = getRepresentation();
+		GraphDataRepr oldRepresetation = getDataRepr();
 		if (oldRepresetation == newRepresentation) {
 			return;
 		}

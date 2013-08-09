@@ -5,7 +5,7 @@ import java.io.IOException;
 import yaps.graph_library.Graph;
 import yaps.graph_library.GraphReader;
 import yaps.graph_library.Path;
-import yaps.graph_library.algorithms.AllPairsShortestPaths;
+import yaps.graph_library.algorithms.AllShortestPaths;
 
 
 public class TestGraphLibrary {
@@ -22,8 +22,8 @@ public class TestGraphLibrary {
 		System.out.println(graph);
 
 		//calcula os menores caminhos
-		AllPairsShortestPaths minPaths = new AllPairsShortestPaths();
-		minPaths.computeShortestPaths(graph);
+		AllShortestPaths minPaths = new AllShortestPaths(graph);
+		minPaths.compute();
 		
 		int origin = 2;  //you may choose any other node
 		

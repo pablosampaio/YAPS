@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import yaps.graph_library.Graph;
 import yaps.graph_library.GraphReader;
-import yaps.graph_library.algorithms.BipartiteMatching;
 import yaps.graph_library.algorithms.HeuristicColoring;
+import yaps.graph_library.algorithms.MaximumBipartiteMatching;
 
 public class TestBipartiteMatching {
 
@@ -16,12 +16,13 @@ public class TestBipartiteMatching {
 
 		testBipartiteness(graph);
 		
-		BipartiteMatching matching = new BipartiteMatching();
+		MaximumBipartiteMatching matching = new MaximumBipartiteMatching(graph);
 		
-		matching.findMaxMatching(graph); 
+		matching.compute(); 
+		//matching.computeAlternative();
 			
-		System.out.println("Tamanho do Emparelhamento Máximo: " + matching.getMaxMatchingSize());
-		System.out.println("Emparelhamento Máximo: " + matching.getMaxMatching());		
+		System.out.println("Tamanho do Emparelhamento Máximo: " + matching.getMatchingSize());
+		System.out.println("Emparelhamento Máximo: " + matching.getMatching());		
 	}
 	
 	

@@ -13,25 +13,22 @@ import yaps.util.PQueueElement;
  * 
  * @author Pablo A. Sampaio
  */
-public class MinimumSpanningTree {
-	private Graph graph;
+public class MinimumSpanningTree extends GraphAlgorithm {
 	private Graph mcsTree; //the minimum-cost spanning tree
 	private double mcsTreeCost;
 	
-	private static final int INFINITE = Integer.MAX_VALUE / 2;
-
-	
 	public MinimumSpanningTree(Graph g) {
-		setGraph(g);
+		super(g);
+		reset(g);
 	}
 	
-	public void setGraph(Graph g) {
+	public void reset(Graph g) {
 		this.graph = g;
 		this.mcsTree = new Graph(g.getNumNodes(), GraphDataRepr.LISTS);
 		this.mcsTreeCost = -1.0d;
 	}
 
-	public void calculateMinTree() {
+	public void compute() {
 		if (mcsTreeCost != -1.0d) {
 			return;
 		}

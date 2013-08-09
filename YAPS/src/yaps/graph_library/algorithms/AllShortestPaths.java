@@ -5,18 +5,17 @@ import yaps.graph_library.Path;
 import yaps.graph_library.GraphDataRepr;
 
 
-public class AllPairsShortestPaths {
+public class AllShortestPaths extends GraphAlgorithm {
 	private double[][] distance;
 	private int[][] predecessor;
 	private int[][] successor;
 
-	private static final int INFINITE = Integer.MAX_VALUE / 2;
-	
-	public AllPairsShortestPaths() {
+	public AllShortestPaths(Graph g) {
+		super(g);
 	}
 	
-	public void computeShortestPaths(Graph g) {
-		int numVertices = g.getNumNodes();
+	public void compute() {
+		int numVertices = graph.getNumNodes();
 
 		distance = new double[numVertices][numVertices];
 		predecessor = new int[numVertices][numVertices];
@@ -29,8 +28,8 @@ public class AllPairsShortestPaths {
 					predecessor[v][u] = -1;
 					successor  [v][u] = -1;
 				
-				} else if (g.existsEdge(v, u)) {
-					distance[v][u] = g.getLength(v,u);
+				} else if (graph.existsEdge(v, u)) {
+					distance[v][u] = graph.getLength(v,u);
 					predecessor[v][u] = v;
 					successor  [v][u] = u;
 					
@@ -122,10 +121,11 @@ public class AllPairsShortestPaths {
 	}
 
 	/**
-	 * Returns a complete graph where the edges are weighted by
-	 * the minimum distances between nodes.
+	 * Returns a graph with the edges representing the shortest paths 
+	 * (if the graph is connected, this will be a complete graph) and 
+	 * the weights of the edges given by the minimum distance.
 	 */
-	public Graph toCompleteDistancesGraph() {
+	public Graph toDistancesGraph() {
 		int order = this.distance.length;
 		Graph graph = new Graph(order, GraphDataRepr.MIXED);
 		

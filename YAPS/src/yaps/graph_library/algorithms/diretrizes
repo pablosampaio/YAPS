@@ -1,20 +1,19 @@
 
 Diretrizes para criação das classes para algoritmos
 
-- fazer a classe calcular o resultado por uma chamada explicita a um método
-  (não pelo construtor)
-  
-- fazer a classe guardar os resultados do algoritmo (mesmo que também retorne
-  na chamada do método principal)
-  
-- apenas resultados importantes do algoritmo devem ser atributos (em casos 
-  excepcionais, valores temporários muito usados podem ser também) 
-
-- valores temporários e entradas: deixar como parâmetros dos métodos e 
-  variáveis locais.  
-  
 - os nomes das classes devem referenciar a soução (e.g. ShortestPaths) ou o
-  problema (e.g. TSP) e não o solucionador (e.g. PathFinder)
+  problema (e.g. TSP) e não o algoritmo (e.g. PathFinder, EdmondsKarp), exceto
+  em casos especiais
+  
+- normalmente, cada instância da classe de um algoritmo servirá para um grafo 
+  particular passado no construtor
 
-
-OBS: Algumas classes ainda precisam ser ajustadas 
+- fazer a classe calcular o resultado por uma chamada explicita a um método
+  (não pelo construtor) - chamar de "compute" ou variante (e.g. "computeAll")
+  
+- fazer a classe guardar os resultados (saídas) do algoritmo como atributos, 
+  para serem acessados por métodos específicos após a chamada ao algoritmo principal
+  
+- valores temporários: deixar como variáveis locais e passar como parâmetros 
+  para os métodos internos (em casos excepcionais, valores temporários muito 
+  usados podem ser deixados como atributos)
