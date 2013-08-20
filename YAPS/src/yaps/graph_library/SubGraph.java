@@ -66,7 +66,7 @@ public class SubGraph extends Graph {
 	}	
 	
 	public static void main(String[] args) throws IOException {
-		Graph graph = GraphReader.readAdjacencyList("src/tests/graph/grafo-11.txt");
+		Graph graph = GraphFileUtil.readAdjacencyList("src/tests/graph/grafo-11.txt");
 		
 		HashSet<Integer> set = new HashSet<>();
 		set.add(0); set.add(1); set.add(4); set.add(5); set.add(6);

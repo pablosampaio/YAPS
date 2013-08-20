@@ -5,7 +5,7 @@ import java.util.List;
 
 import yaps.graph_library.Edge;
 import yaps.graph_library.Graph;
-import yaps.graph_library.GraphReader;
+import yaps.graph_library.GraphFileUtil;
 import yaps.graph_library.Path;
 
 public class ChristofidesTspApproximation extends GraphAlgorithm {
@@ -63,7 +63,7 @@ public class ChristofidesTspApproximation extends GraphAlgorithm {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Graph graph = GraphReader.readAdjacencyList("src\\tests\\graph\\grafo-11.txt");
+		Graph graph = GraphFileUtil.readAdjacencyList("src\\tests\\graph\\grafo-11.txt");
 		
 		MinimumSpanningTree minTree = new MinimumSpanningTree(graph);
 		

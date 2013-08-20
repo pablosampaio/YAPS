@@ -3,7 +3,8 @@ package tests.graph;
 import java.io.IOException;
 
 import yaps.graph_library.Graph;
-import yaps.graph_library.GraphReader;
+import yaps.graph_library.GraphFileFormat;
+import yaps.graph_library.GraphFileUtil;
 import yaps.graph_library.Path;
 import yaps.graph_library.algorithms.AllShortestPaths;
 
@@ -12,11 +13,17 @@ public class TestGraphLibrary {
 
 	public static void main(String[] args) throws IOException {
 		//testEditing();
-		testReadingAndShortestPaths();
+		//testReadingAndShortestPaths();
+		testFileFormatConversion();
+	}
+
+	private static void testFileFormatConversion() throws IOException {
+		GraphFileUtil.convert("maps/map_a.xml", GraphFileFormat.SIMPATROL, "map_a.edge", GraphFileFormat.EDGE_LIST);
+		System.out.println("Ok");
 	}
 
 	private static void testReadingAndShortestPaths() throws IOException {
-		Graph graph = GraphReader.readAdjacencyList("src/tests/graph/island11");
+		Graph graph = GraphFileUtil.readAdjacencyList("src/tests/graph/island11");
 		
 		//imprime o grafo na forma de matriz e de listas de adjacencias
 		System.out.println(graph);

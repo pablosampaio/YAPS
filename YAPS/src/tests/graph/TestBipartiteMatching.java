@@ -3,7 +3,7 @@ package tests.graph;
 import java.io.IOException;
 
 import yaps.graph_library.Graph;
-import yaps.graph_library.GraphReader;
+import yaps.graph_library.GraphFileUtil;
 import yaps.graph_library.algorithms.HeuristicMinColoring;
 import yaps.graph_library.algorithms.MaximumBipartiteMatching;
 
@@ -11,7 +11,7 @@ public class TestBipartiteMatching {
 
 
 	public static void main(String[] args) throws IOException {
-		Graph graph = GraphReader.readEdgeList("src\\tests\\graph\\grafo-23.txt"); /*/
+		Graph graph = GraphFileUtil.readEdgeList("src\\tests\\graph\\grafo-23.txt"); /*/
 		Graph graph = GraphReader.readAdjacencyList("src\\tests\\graph\\grafo-24.txt"); //*/
 
 		testBipartiteness(graph);

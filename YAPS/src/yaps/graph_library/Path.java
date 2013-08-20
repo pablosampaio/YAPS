@@ -64,7 +64,7 @@ public class Path extends LinkedList<Integer> {
 	 * not strongly connected).
 	 * <br><br>
 	 * It should return the same value as: <br>
-	 * getCost( expandShortestPaths(path,graph) , graph) .
+	 * expandShortestPaths(graph).getCost(graph) .
 	 */
 	public double getCostExpandingShortestPaths(AllShortestPaths shortest) {
 		int n = this.size();
@@ -111,10 +111,10 @@ public class Path extends LinkedList<Integer> {
 	}	
 	
 	/**
-	 * If the start and end nodes of the list are the same, rotates the
-	 * list to start with the given vertex. Otherwise, returns null.
+	 * If it is a cycle (i.e. the start and end nodes are the same), rotates it
+	 * to start with the given vertex. Otherwise, returns null.
 	 */
-	public Path rotateList(Integer startNode) {
+	public Path rotateCycle(Integer startNode) {
 		if (!this.isCycle()) {
 			return null;
 		}
