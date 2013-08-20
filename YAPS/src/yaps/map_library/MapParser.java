@@ -187,8 +187,8 @@ public class MapParser {
 			lexer.readSymbol(':');
 			
 			this.edges[id] = new EdgeInfo(id, directed, nodeFrom, nodeTo);
-			double length;
 			
+			int length;			
 			for (int a = 0; a < this.edgeAttributes.size(); a ++) {
 				attrValue = this.edgeAttributes.get(a);
 				
@@ -196,7 +196,7 @@ public class MapParser {
 					this.edges[id].setLabel(lexer.readString()); 
 				
 				} else if (attrValue.equals("length")) {
-					length = lexer.readDecimal();
+					length = lexer.readInteger();
 					if (length > 0) {
 						this.edges[id].setLength(length);
 					} else {
@@ -210,7 +210,7 @@ public class MapParser {
 			}
 			
 			if (! this.hasLengths) {
-				this.edges[id].setLength(1.0d);
+				this.edges[id].setLength(1);
 			}
 
 			lexer.advanceLines();

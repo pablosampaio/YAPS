@@ -13,7 +13,7 @@ public class EdgeInfo {
 	public final int nodeB;
 	public final boolean directed;
 	
-	private double length;
+	private int length;
 	private String label;	
 
 	
@@ -32,11 +32,11 @@ public class EdgeInfo {
 		this.label = label;
 	}
 
-	public double getLength() {
+	public int getLength() {
 		return length;
 	}
 
-	void setLength(double length) {
+	void setLength(int length) {
 		this.length = length;
 	}
 

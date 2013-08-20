@@ -59,12 +59,12 @@ public class MaximumBipartiteMatching extends GraphAlgorithm {
 		
 		for (int node = 0; node < numNodes; node++) {
 			if (coloring.getColor(node) == 1) {
-				augmentedGraph.addEdge(source, node, 1);			
+				augmentedGraph.addArc(source, node, 1);			
 				for (Edge e : this.graph.getOutEdges(node)) {
-					augmentedGraph.addEdge(node, e.getTarget(), 1);
+					augmentedGraph.addArc(node, e.getTarget(), 1);
 				}
 			} else {
-				augmentedGraph.addEdge(node, sink, 1);
+				augmentedGraph.addArc(node, sink, 1);
 			}
 		}
 		

@@ -12,13 +12,21 @@ import yaps.graph_library.algorithms.AllShortestPaths;
 public class TestGraphLibrary {
 
 	public static void main(String[] args) throws IOException {
-		//testEditing();
+		//testEditing(); 
 		//testReadingAndShortestPaths();
-		testFileFormatConversion();
+		testFileFormatConversion(); 
 	}
 
 	private static void testFileFormatConversion() throws IOException {
-		GraphFileUtil.convert("maps/map_a.xml", GraphFileFormat.SIMPATROL, "map_a.edge", GraphFileFormat.EDGE_LIST);
+		String[] maps = { "map_cicles_corridor", "map_city_traffic", "map_grid",
+				"map_islands", "map_random_directed_1", "map_random_directed_2" };
+		
+		for (String mapName : maps) {
+			GraphFileUtil.convert("maps/" + mapName + ".xml", GraphFileFormat.SIMPATROL, 
+					"tmp/" + mapName + ".adj", GraphFileFormat.ADJACENCY_LIST);
+			System.out.println("Converted " + mapName);
+		}
+		
 		System.out.println("Ok");
 	}
 
@@ -41,19 +49,19 @@ public class TestGraphLibrary {
 		}
 	}
 
-	public static void testEditing() {
+	private static void testEditing() {
 		Graph graph = new Graph(5);
 		
-		graph.addEdge(0, 1, 1.0);
-		graph.addEdge(0, 4, 5.0);
-		graph.addEdge(1, 4, 1.0);
-		graph.addEdge(1, 2, 1.0);
-		graph.addEdge(1, 3, 5.0);
-		graph.addUndirectedEdge(2, 3, 1.2);
+		graph.addArc(0, 1, 10);
+		graph.addArc(0, 4, 50);
+		graph.addArc(1, 4, 10);
+		graph.addArc(1, 2, 10);
+		graph.addArc(1, 3, 50);
+		graph.addUndirectedEdge(2, 3, 12);
 		
 		System.out.println(graph);
 		
-		graph.removeEdge(3, 2);
+		graph.removeEdge(3, 2); //removes both directions
 		
 		System.out.println(graph);
 	}

@@ -83,7 +83,7 @@ public class EdgeConnectivity extends GraphAlgorithm {
 		for (int v = 0; v < numVertices; v++) {
 			outEdges = g.getOutEdges(v);
 			for (Edge e : outEdges) {
-				gu.addEdge(v, e.getTarget(), 1);
+				gu.addArc(v, e.getTarget(), 1);
 			}
 		}
 		

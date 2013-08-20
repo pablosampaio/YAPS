@@ -6,7 +6,7 @@ import yaps.graph_library.GraphDataRepr;
 
 
 public class AllShortestPaths extends GraphAlgorithm {
-	private double[][] distance;
+	private int[][] distance;
 	private int[][] predecessor;
 	private int[][] successor;
 
@@ -17,7 +17,7 @@ public class AllShortestPaths extends GraphAlgorithm {
 	public void compute() {
 		int numVertices = graph.getNumNodes();
 
-		distance = new double[numVertices][numVertices];
+		distance = new int[numVertices][numVertices];
 		predecessor = new int[numVertices][numVertices];
 		successor = new int[numVertices][numVertices];
 
@@ -132,7 +132,7 @@ public class AllShortestPaths extends GraphAlgorithm {
 		for (int v = 0; v < order; v++) {
 			for (int x = 0; x < order; x++) {
 				if (distance[v][x] != INFINITE) {
-					graph.addEdge(v, x, distance[v][x]);
+					graph.addArc(v, x, distance[v][x]);
 				}
 			}
 		}

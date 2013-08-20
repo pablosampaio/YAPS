@@ -44,7 +44,7 @@ public class MaximumFlow extends GraphAlgorithm {
 		for (int i = 0; i < numNodes; i++) {
 			for (int j = 0; j < numNodes; j++) {
 				if (flow[i][j] > 0) { 
-					g.addEdge(i, j, flow[i][j]);
+					g.addArc(i, j, flow[i][j]);
 				}
 			}
 		}

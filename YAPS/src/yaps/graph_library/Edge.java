@@ -12,10 +12,10 @@ public class Edge {
 	private int sourceId;
 	private int targetId;
 	
-	private double length;
+	private int length;
 	private boolean directed;
 	
-	Edge(int ident, int source, int target, double weight, boolean directed) {
+	Edge(int ident, int source, int target, int weight, boolean directed) {
 		this.identifier = ident;
 		this.sourceId = source;
 		this.targetId = target;
@@ -23,12 +23,12 @@ public class Edge {
 		this.directed = directed;
 	}
 
-	Edge(int ident, int source, int target, double weight) {
+	Edge(int ident, int source, int target, int weight) {
 		this(ident, source, target, weight, true);
 	}
 	
 	public Edge(int source, int target) {
-		this(-1, source, target, 1.0d, true);
+		this(-1, source, target, 1, true);
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class Edge {
 		return targetId;
 	}
 
-	public double getLength() {
+	public int getLength() {
 		return length;
 	}
 	

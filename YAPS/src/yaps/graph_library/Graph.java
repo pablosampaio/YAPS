@@ -48,17 +48,25 @@ public class Graph {
 			}
 		}
 	}
+
+	public int addEdge(int v, int u, int length, boolean directed) {
+		if (directed) {
+			return addArc(v, u, length);
+		} else {
+			return addUndirectedEdge(v, u, length);
+		}
+	}
 	
 	//otimizado para: matrix, mixed
-	public int addEdge(int v, int u, double length) {
+	public int addArc(int v, int u, int length) {
 		int id = this.numEdges;
-		this.addDirectedEdge(id, v, u, length);
+		this.addArcInternal(id, v, u, length, true);
 		this.numEdges ++;
 		return id;
 	}
 	
-	private void addDirectedEdge(int id, int v, int u, double length) {
-		Edge edge = new Edge(id, v, u, length);
+	private void addArcInternal(int id, int v, int u, int length, boolean directed) {
+		Edge edge = new Edge(id, v, u, length, directed);
 		
 		if (existsEdge(v, u)) {
 			throw new IllegalArgumentException("Edge from " + v + " to " + u + " already exist!");	
@@ -71,22 +79,30 @@ public class Graph {
 		}
 	}
 
-	public int addUndirectedEdge(int v, int u, double length) {
+	public int addUndirectedEdge(int v, int u, int length) {
 		int id = this.numEdges;
-		this.addDirectedEdge(id, v, u, length);
-		this.addDirectedEdge(id, u, v, length);
+		this.addArcInternal(id, v, u, length, false);
+		this.addArcInternal(id, u, v, length, false);
 		this.numEdges ++;
 		return id;
 	}
 
 	//otimizado para: matrix
 	public void removeEdge(int v, int u) {
+		Edge e = this.getEdge(v,u);
+		removeArcInternal(v,u);
+		if (!e.isDirected()) {
+			removeArcInternal(u,v);
+		}
+	}
+	
+	private void removeArcInternal(int v, int u) {
 		if (representation != GraphDataRepr.LISTS) {
 			matrix[v][u] = null;
 		}
 		if (representation != GraphDataRepr.MATRIX) {
 			adjacencies[v].remove(new Edge(v,u));
-		}		
+		}
 	}
 
 	public int getNumNodes() {
@@ -107,7 +123,7 @@ public class Graph {
 	}
 
 	//otimizado para: matrix, mixed
-	public double getLength(int source, int target) {
+	public int getLength(int source, int target) {
 		if (representation != GraphDataRepr.LISTS) {
 			return matrix[source][target].getLength();
 		
@@ -119,6 +135,21 @@ public class Graph {
 				}
 			}
 			return 0;
+		}
+	}
+
+	public Edge getEdge(int source, int target) {
+		if (representation != GraphDataRepr.LISTS) {
+			return matrix[source][target];
+		
+		} else {
+			Edge edgeCopy = new Edge(source,target);
+			for (Edge edge : adjacencies[source]) {
+				if (edge.equals(edgeCopy)) {
+					return edge;
+				}
+			}
+			return null;
 		}
 	}
 	

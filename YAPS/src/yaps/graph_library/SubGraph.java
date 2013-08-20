@@ -42,7 +42,7 @@ public class SubGraph extends Graph {
 				int tgt = this.toSubNode( e.getTarget() );				
 				if (src != -1 && tgt != -1) {
 					if (e.isDirected()) {
-						addEdge(src, tgt, e.getLength());
+						addArc(src, tgt, e.getLength());
 					} else if (src >= tgt) {
 						addUndirectedEdge(src, tgt, e.getLength());
 					}

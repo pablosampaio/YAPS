@@ -48,7 +48,7 @@ public class MinimumSpanningTree extends GraphAlgorithm {
 		//System.out.printf("\n[PRIM, root=%d]\n", root);
 
 		int u;
-		double edgeCost;
+		int edgeCost;
 
 		this.mcsTreeCost = 0.0d;
 		
@@ -92,15 +92,15 @@ public class MinimumSpanningTree extends GraphAlgorithm {
 		private int id;
 		
 		private int parent;
-		private double costToLink;
+		private int costToLink;
 		
-		NodeInfo(int v, double cost) {
-			id = v;
+		NodeInfo(int nodeId, int cost) {
+			id = nodeId;
 			parent = -1;
 			costToLink = cost;
 		}
 		
-		void changeLink(int parentNode, double edgeCost) {
+		void changeLink(int parentNode, int edgeCost) {
 			this.parent = parentNode;
 			this.costToLink = edgeCost;
 		}

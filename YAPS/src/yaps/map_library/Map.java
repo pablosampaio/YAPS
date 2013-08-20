@@ -38,11 +38,7 @@ public class Map {
 		Graph g = new Graph(this.nodes.length);
 		
 		for (EdgeInfo e : this.edges) {
-			if (e.directed) {
-				g.addEdge(e.nodeA, e.nodeB, e.getLength());
-			} else {
-				g.addUndirectedEdge(e.nodeA, e.nodeB, e.getLength());
-			}
+			g.addEdge(e.nodeA, e.nodeB, e.getLength(), e.directed);
 		}
 		
 		this.topology = g;

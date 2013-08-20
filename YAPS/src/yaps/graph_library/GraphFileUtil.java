@@ -53,7 +53,7 @@ public class GraphFileUtil {
 			writeAsSimpatrolFormat(g, fileName, true);
 			break;
 		case TSP_LIB:
-			writeAsTspLib(g, fileName, INFINITE);
+			writeAsTspLib(g, fileName, TSPLIB_INFINITE);
 			break;
 		default:
 			System.out.println("Invalid format - no file saved.");
@@ -106,7 +106,7 @@ public class GraphFileUtil {
 				peso = Integer.parseInt(pesoStr);
 				
 				if (sucessor != -1) {
-					graph.addEdge(v, sucessor, peso);
+					graph.addArc(v, sucessor, peso);
 				}
 			}
 		}		
@@ -138,7 +138,7 @@ public class GraphFileUtil {
 			succ = Integer.parseInt(tokenizer.nextToken().trim());
 			weight = Integer.parseInt(tokenizer.nextToken().trim());
 			
-			graph.addEdge(v, succ, weight);
+			graph.addArc(v, succ, weight);
 
 			line = inputFile.readLine();
 		}
@@ -186,10 +186,10 @@ public class GraphFileUtil {
 			//System.out.printf("Aresta: (%s,%s) %s\n", source, target, capacity);
 			
 			if (directed) {
-				graph.addEdge(source, target, capacity);
+				graph.addArc(source, target, capacity);
 			} else {
-				graph.addEdge(source, target, capacity);
-				graph.addEdge(target, source, capacity);
+				graph.addArc(source, target, capacity);
+				graph.addArc(target, source, capacity);
 			}
 			
 			line = inputFile.readLine().trim();
@@ -199,7 +199,7 @@ public class GraphFileUtil {
 		return graph;
 	}
 
-	public static final int INFINITE = 9999999;
+	public static final int TSPLIB_INFINITE = 9999999;
 	
 	public static Graph readTspLib(String fileName) throws IOException {
 		BufferedReader inputFile = new BufferedReader(new FileReader(fileName));
@@ -241,9 +241,9 @@ public class GraphFileUtil {
 			parts = line.split("[ \\t]+");
 			for (int i = 1; i < parts.length; i++) { //skips index 0 (always an empty string)
 				cost = Long.parseLong(parts[i]);
-				if (cost < INFINITE) {
+				if (cost < TSPLIB_INFINITE) {
 					System.out.printf("Aresta: (%s,%s) %s\n", source, target, cost);
-					graph.addEdge(source, target, (int)cost);
+					graph.addArc(source, target, (int)cost);
 				}
 				target++;
 				if (target == numNodes) {
@@ -258,11 +258,13 @@ public class GraphFileUtil {
 		return graph;
 	}
 	
+	private static int PRECISION_OF_LENGTH = 1; //no decimal places are considered (only the integer part)
+	
 	public static Graph readSimpatrolFormat(String fileName) throws IOException {
 		BufferedReader inputFile = new BufferedReader(new FileReader(fileName));
 		String line;
 
-		/* reads the nodes' information */
+		/* reads nodes' information */
 		
 		HashMap<String,Integer> nodeIndex = new HashMap<>();
 		String node;
@@ -275,20 +277,19 @@ public class GraphFileUtil {
 		do {
 			node = getAttrValue(line, "id");
 			nodeIndex.put(node, numNodes);
-			System.out.printf("Node name: %s, index: %s.\n", node, numNodes);
+			//System.out.printf("Node name: %s, index: %s.\n", node, numNodes);
 
 			numNodes++;			
 			line = inputFile.readLine().trim();		
 		} while (line.startsWith("<node"));
 		
-		/* the output graph */
+		/* creates the graph object */
 		Graph graph = new Graph(numNodes);
 		
-		/* reads the nodes' information */		
+		/* reads edges' information */		
 		String edge;
-		int source, target;
+		int source, target, length;
 		boolean directed;
-		double length;
 		
 		while (!line.startsWith("<edge")) {
 			line = inputFile.readLine().trim();
@@ -298,20 +299,17 @@ public class GraphFileUtil {
 			edge = getAttrValue(line, "id");
 			source = nodeIndex.get(getAttrValue(line, "source"));
 			target = nodeIndex.get(getAttrValue(line, "target"));
-			length = Double.parseDouble(getAttrValue(line, "length"));
+			length = (int)(PRECISION_OF_LENGTH * Double.parseDouble(getAttrValue(line, "length")));
 			directed = Boolean.parseBoolean(getAttrValue(line, "directed"));
 
-			System.out.printf("Edge %s: (%d,%d) len=%5.2f, directed: %s\n", edge, source, target, length, directed);
-			if (directed) {
-				graph.addEdge(source, target, length);
-			} else {
-				graph.addUndirectedEdge(source, target, length);
-			}
+			//System.out.printf("Edge %s: (%d,%d) len=%d directed: %s\n", edge, source, target, length, directed);
+			graph.addEdge(source, target, length, directed);
 			
 			line = inputFile.readLine().trim();
 			
 		} while (line.startsWith("<edge"));
 			
+		inputFile.close();
 		return graph;
 	}
 
